@@ -19,12 +19,20 @@ def add_tube(polygons, x, y, z, r1, r2, h, step):
         s1 = start
         s2 = (s1 + 1) % step
         
+        #top face
+        add_polygon(polygons, topOuter[s2][0], topOuter[s2][1], topOuter[s2][2], topOuter[s1][0], topOuter[s1][1], topOuter[s1][2], topInner[s1][0], topInner[s1][1], topInner[s1][2])
+        add_polygon(polygons, topOuter[s2][0], topOuter[s2][1], topOuter[s2][2], topInner[s1][0], topInner[s1][1], topInner[s1][2], topInner[s2][0], topInner[s2][1], topInner[s2][2])
+        
+        #bottom face
+        add_polygon(polygons, baseOuter[s1][0], baseOuter[s1][1], baseOuter[s1][2], baseOuter[s2][0], baseOuter[s2][1], baseOuter[s2][2], baseInner[s1][0], baseInner[s1][1], baseInner[s1][2])
+        add_polygon(polygons, baseOuter[s2][0], baseOuter[s2][1], baseOuter[s2][2], baseInner[s2][0], baseInner[s2][1], baseInner[s2][2], baseInner[s1][0], baseInner[s1][1], baseInner[s1][2])
+        
         #outside
         add_polygon( polygons, topOuter[s1][0], topOuter[s1][1], topOuter[s1][2], baseOuter[s2][0], baseOuter[s2][1], baseOuter[s2][2], baseOuter[s1][0], baseOuter[s1][1], baseOuter[s1][2])
         add_polygon( polygons, baseOuter[s2][0], baseOuter[s2][1], baseOuter[s2][2], topOuter[s1][0], topOuter[s1][1], topOuter[s1][2], topOuter[s2][0], topOuter[s2][1], topOuter[s2][2])
         #inside
-        add_polygon( polygons, topInner[s1][0], topInner[s1][1], topInner[s1][2], baseInner[s2][0], baseInner[s2][1], baseInner[s2][2], baseInner[s1][0], baseInner[s1][1], baseInner[s1][2])
-        add_polygon( polygons, baseInner[s2][0], baseInner[s2][1], baseInner[s2][2], topInner[s1][0], topInner[s1][1], topInner[s1][2], topInner[s2][0], topInner[s2][1], topInner[s2][2])
+        add_polygon( polygons, topInner[s1][0], topInner[s1][1], topInner[s1][2], baseInner[s1][0], baseInner[s1][1], baseInner[s1][2], baseInner[s2][0], baseInner[s2][1], baseInner[s2][2])
+        add_polygon( polygons, baseInner[s2][0], baseInner[s2][1], baseInner[s2][2], topInner[s2][0], topInner[s2][1], topInner[s2][2], topInner[s1][0], topInner[s1][1], topInner[s1][2])
         
         start+=1
 
