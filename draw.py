@@ -2,6 +2,199 @@ from display import *
 from matrix import *
 from gmath import *
 
+##---------------------------------BOX------------------------------##
+
+
+def add_box( polygons, x, y, z, width, height, depth ):
+    x1 = x + width
+    y1 = y - height
+    z1 = z - depth
+
+    #front
+    add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z)
+    add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
+
+    #back
+    add_polygon(polygons, x1, y, z1, x, y1, z1, x, y, z1)
+    add_polygon(polygons, x1, y, z1, x1, y1, z1, x, y1, z1)
+
+    #right side
+    add_polygon(polygons, x1, y, z, x1, y1, z1, x1, y, z1)
+    add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1)
+    #left side
+    add_polygon(polygons, x, y, z1, x, y1, z, x, y, z)
+    add_polygon(polygons, x, y, z1, x, y1, z1, x, y1, z)
+
+    #top
+    add_polygon(polygons, x, y, z1, x1, y, z, x1, y, z1)
+    add_polygon(polygons, x, y, z1, x, y, z, x1, y, z)
+    #bottom
+    add_polygon(polygons, x, y1, z, x1, y1, z1, x1, y1, z)
+    add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1)
+
+
+##---------------------------------SPHERE/ELLIPSOID-------------------------##
+
+
+def add_sphere(polygons, cx, cy, cz, rx, ry, rz, step ):
+    points = generate_sphere(cx, cy, cz, rx, ry, rz, step)
+
+    lat_start = 0
+    lat_stop = step
+    longt_start = 0
+    longt_stop = step
+
+    step+= 1
+    for lat in range(lat_start, lat_stop):
+        for longt in range(longt_start, longt_stop):
+
+            p0 = lat * step + longt
+            p1 = p0+1
+            p2 = (p1+step) % (step * (step-1))
+            p3 = (p0+step) % (step * (step-1))
+
+            if longt != step - 2:
+                add_polygon( polygons, points[p0][0],
+                             points[p0][1],
+                             points[p0][2],
+                             points[p1][0],
+                             points[p1][1],
+                             points[p1][2],
+                             points[p2][0],
+                             points[p2][1],
+                             points[p2][2])
+            if longt != 0:
+                add_polygon( polygons, points[p0][0],
+                             points[p0][1],
+                             points[p0][2],
+                             points[p2][0],
+                             points[p2][1],
+                             points[p2][2],
+                             points[p3][0],
+                             points[p3][1],
+                             points[p3][2])
+
+
+def generate_sphere( cx, cy, cz, rx, ry, rz, step ):
+    points = []
+
+    rot_start = 0
+    rot_stop = step
+    circ_start = 0
+    circ_stop = step
+
+    for rotation in range(rot_start, rot_stop):
+        rot = rotation/float(step)
+        for circle in range(circ_start, circ_stop+1):
+            circ = circle/float(step)
+
+            x = rx * math.cos(math.pi * circ) + cx
+            y = ry * math.sin(math.pi * circ) * math.cos(2*math.pi * rot) + cy
+            z = rz * math.sin(math.pi * circ) * math.sin(2*math.pi * rot) + cz
+
+            points.append([x, y, z])
+            #print 'rotation: %d\tcircle%d'%(rotation, circle)
+    return points
+
+##------------------------CYLINDER------------------------------##
+
+def add_cylinder(polygons, cx, cy, cz, r, h, step):
+    #step = 10
+    top_points = generate_cylinder(cx, cy, cz, r, h, step)
+    bottom_points = generate_cylinder(cx, cy-h, cz, r, h, step)
+    
+    
+    start = 0
+    stop = step
+    
+    while start < stop:
+        s1 = start
+        s2 = (s1 + 1) % step
+
+        add_polygon(polygons, top_points[0][0], top_points[0][1], top_points[0][2], top_points[s2][0], top_points[s2][1], top_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2])
+
+        add_polygon( polygons, top_points[s1][0], top_points[s1][1], top_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2])
+        add_polygon( polygons, bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2], top_points[s2][0], top_points[s2][1], top_points[s2][2])
+        add_polygon(polygons, bottom_points[0][0], bottom_points[0][1], bottom_points[0][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2])
+        start+=1
+
+def generate_cylinder( cx, cy, cz, r, h, step):
+    points = []
+    for circle in range(0, step):
+        circ = circle/float(step)
+        
+        x = r * math.cos(2*math.pi * circ) + cx
+        z = r * math.sin(2*math.pi * circ) + cz
+
+        points.append([x, cy, z])
+    
+    return points
+    
+##---------------------------TORUS----------------------------##
+
+def add_torus(polygons, cx, cy, cz, r0, r1, step ):
+    points = generate_torus(cx, cy, cz, r0, r1, step)
+
+    lat_start = 0
+    lat_stop = step
+    longt_start = 0
+    longt_stop = step
+
+    for lat in range(lat_start, lat_stop):
+        for longt in range(longt_start, longt_stop):
+
+            p0 = lat * step + longt;
+            if (longt == (step - 1)):
+                p1 = p0 - longt;
+            else:
+                p1 = p0 + 1;
+            p2 = (p1 + step) % (step * step);
+            p3 = (p0 + step) % (step * step);
+
+            add_polygon(polygons,
+                        points[p0][0],
+                        points[p0][1],
+                        points[p0][2],
+                        points[p3][0],
+                        points[p3][1],
+                        points[p3][2],
+                        points[p2][0],
+                        points[p2][1],
+                        points[p2][2] )
+            add_polygon(polygons,
+                        points[p0][0],
+                        points[p0][1],
+                        points[p0][2],
+                        points[p2][0],
+                        points[p2][1],
+                        points[p2][2],
+                        points[p1][0],
+                        points[p1][1],
+                        points[p1][2] )
+
+
+def generate_torus( cx, cy, cz, r0, r1, step ):
+    points = []
+    rot_start = 0
+    rot_stop = step
+    circ_start = 0
+    circ_stop = step
+
+    for rotation in range(rot_start, rot_stop):
+        rot = rotation/float(step)
+        for circle in range(circ_start, circ_stop):
+            circ = circle/float(step)
+
+            x = math.cos(2*math.pi * rot) * (r0 * math.cos(2*math.pi * circ) + r1) + cx;
+            y = r0 * math.sin(2*math.pi * circ) + cy;
+            z = -1*math.sin(2*math.pi * rot) * (r0 * math.cos(2*math.pi * circ) + r1) + cz;
+
+            points.append([x, y, z])
+    return points
+
+
+##-----------------------------------SCANLINE and POLYGONS-----------------##
+
 def draw_scanline(x0, z0, x1, z1, y, screen, zbuffer, color):
     if x0 > x1:
         tx = x0
@@ -116,185 +309,7 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
         point+= 3
 
 
-def add_box( polygons, x, y, z, width, height, depth ):
-    x1 = x + width
-    y1 = y - height
-    z1 = z - depth
-
-    #front
-    add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z)
-    add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
-
-    #back
-    add_polygon(polygons, x1, y, z1, x, y1, z1, x, y, z1)
-    add_polygon(polygons, x1, y, z1, x1, y1, z1, x, y1, z1)
-
-    #right side
-    add_polygon(polygons, x1, y, z, x1, y1, z1, x1, y, z1)
-    add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1)
-    #left side
-    add_polygon(polygons, x, y, z1, x, y1, z, x, y, z)
-    add_polygon(polygons, x, y, z1, x, y1, z1, x, y1, z)
-
-    #top
-    add_polygon(polygons, x, y, z1, x1, y, z, x1, y, z1)
-    add_polygon(polygons, x, y, z1, x, y, z, x1, y, z)
-    #bottom
-    add_polygon(polygons, x, y1, z, x1, y1, z1, x1, y1, z)
-    add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1)
-
-def add_sphere(polygons, cx, cy, cz, rx, ry, rz, step ):
-    points = generate_sphere(cx, cy, cz, rx, ry, rz, step)
-
-    lat_start = 0
-    lat_stop = step
-    longt_start = 0
-    longt_stop = step
-
-    step+= 1
-    for lat in range(lat_start, lat_stop):
-        for longt in range(longt_start, longt_stop):
-
-            p0 = lat * step + longt
-            p1 = p0+1
-            p2 = (p1+step) % (step * (step-1))
-            p3 = (p0+step) % (step * (step-1))
-
-            if longt != step - 2:
-                add_polygon( polygons, points[p0][0],
-                             points[p0][1],
-                             points[p0][2],
-                             points[p1][0],
-                             points[p1][1],
-                             points[p1][2],
-                             points[p2][0],
-                             points[p2][1],
-                             points[p2][2])
-            if longt != 0:
-                add_polygon( polygons, points[p0][0],
-                             points[p0][1],
-                             points[p0][2],
-                             points[p2][0],
-                             points[p2][1],
-                             points[p2][2],
-                             points[p3][0],
-                             points[p3][1],
-                             points[p3][2])
-
-
-def generate_sphere( cx, cy, cz, rx, ry, rz, step ):
-    points = []
-
-    rot_start = 0
-    rot_stop = step
-    circ_start = 0
-    circ_stop = step
-
-    for rotation in range(rot_start, rot_stop):
-        rot = rotation/float(step)
-        for circle in range(circ_start, circ_stop+1):
-            circ = circle/float(step)
-
-            x = rx * math.cos(math.pi * circ) + cx
-            y = ry * math.sin(math.pi * circ) * math.cos(2*math.pi * rot) + cy
-            z = rz * math.sin(math.pi * circ) * math.sin(2*math.pi * rot) + cz
-
-            points.append([x, y, z])
-            #print 'rotation: %d\tcircle%d'%(rotation, circle)
-    return points
-
-def add_cylinder(polygons, cx, cy, cz, r, h, step):
-    #step = 10
-    top_points = generate_cylinder(cx, cy, cz, r, h, step)
-    bottom_points = generate_cylinder(cx, cy-h, cz, r, h, step)
-    
-    
-    start = 0
-    stop = step
-    
-    while start < stop:
-        s1 = start
-        s2 = (s1 + 1) % step
-
-        add_polygon(polygons, top_points[0][0], top_points[0][1], top_points[0][2], top_points[s2][0], top_points[s2][1], top_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2])
-
-        add_polygon( polygons, top_points[s1][0], top_points[s1][1], top_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2])
-        add_polygon( polygons, bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2], top_points[s2][0], top_points[s2][1], top_points[s2][2])
-        add_polygon(polygons, bottom_points[0][0], bottom_points[0][1], bottom_points[0][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2])
-        start+=1
-
-def generate_cylinder( cx, cy, cz, r, h, step):
-    points = []
-    for circle in range(0, step):
-        circ = circle/float(step)
-        
-        x = r * math.cos(2*math.pi * circ) + cx
-        z = r * math.sin(2*math.pi * circ) + cz
-
-        points.append([x, cy, z])
-    
-    return points
-
-def add_torus(polygons, cx, cy, cz, r0, r1, step ):
-    points = generate_torus(cx, cy, cz, r0, r1, step)
-
-    lat_start = 0
-    lat_stop = step
-    longt_start = 0
-    longt_stop = step
-
-    for lat in range(lat_start, lat_stop):
-        for longt in range(longt_start, longt_stop):
-
-            p0 = lat * step + longt;
-            if (longt == (step - 1)):
-                p1 = p0 - longt;
-            else:
-                p1 = p0 + 1;
-            p2 = (p1 + step) % (step * step);
-            p3 = (p0 + step) % (step * step);
-
-            add_polygon(polygons,
-                        points[p0][0],
-                        points[p0][1],
-                        points[p0][2],
-                        points[p3][0],
-                        points[p3][1],
-                        points[p3][2],
-                        points[p2][0],
-                        points[p2][1],
-                        points[p2][2] )
-            add_polygon(polygons,
-                        points[p0][0],
-                        points[p0][1],
-                        points[p0][2],
-                        points[p2][0],
-                        points[p2][1],
-                        points[p2][2],
-                        points[p1][0],
-                        points[p1][1],
-                        points[p1][2] )
-
-
-def generate_torus( cx, cy, cz, r0, r1, step ):
-    points = []
-    rot_start = 0
-    rot_stop = step
-    circ_start = 0
-    circ_stop = step
-
-    for rotation in range(rot_start, rot_stop):
-        rot = rotation/float(step)
-        for circle in range(circ_start, circ_stop):
-            circ = circle/float(step)
-
-            x = math.cos(2*math.pi * rot) * (r0 * math.cos(2*math.pi * circ) + r1) + cx;
-            y = r0 * math.sin(2*math.pi * circ) + cy;
-            z = -1*math.sin(2*math.pi * rot) * (r0 * math.cos(2*math.pi * circ) + r1) + cz;
-
-            points.append([x, y, z])
-    return points
-
+##------------------------------2D-------------------------------#
 
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
