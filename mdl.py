@@ -12,6 +12,7 @@ tokens = (
     "SAVE_COORDS",
     "CAMERA",
     "AMBIENT",
+    "CYLINDER",
     "TORUS",
     "SPHERE",
     "BOX", 
@@ -51,6 +52,7 @@ reserved = {
     "save_coord_system" : "SAVE_COORDS", 
     "camera" : "CAMERA",
     "ambient" : "AMBIENT",
+    "cylinder" : "CYLINDER",
     "torus" : "TORUS",
     "sphere" : "SPHERE",
     "box" : "BOX",
@@ -163,20 +165,21 @@ def p_command_show(p):
     commands.append({'op' : p[1], 'args' : None})
 
 def p_command_sphere(p):
-    """command : SPHERE NUMBER NUMBER NUMBER NUMBER
-               | SPHERE SYMBOL NUMBER NUMBER NUMBER NUMBER
-               | SPHERE NUMBER NUMBER NUMBER NUMBER SYMBOL
-               | SPHERE SYMBOL NUMBER NUMBER NUMBER NUMBER SYMBOL"""
+    """command : SPHERE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
+               | SPHERE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
+               | SPHERE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
+               | SPHERE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
+    print("P", p[7])
     cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
     arg_start = 2
     if isinstance(p[2], str):
         cmd['constants'] = p[2]
         arg_start = 3
-    if len(p) == 7 and isinstance(p[6], str):
-        cmd['cs'] = p[6]
-    if len(p) == 8 and isinstance(p[7], str):
-          cmd['cs'] = p[7]
-    cmd['args'] = p[arg_start:arg_start+4]
+    if len(p) == 9 and isinstance(p[8], str):
+        cmd['cs'] = p[8]
+    if len(p) == 10 and isinstance(p[9], str):
+          cmd['cs'] = p[9]
+    cmd['args'] = p[arg_start:arg_start+6]
     commands.append(cmd)
 
 def p_command_torus(p):
