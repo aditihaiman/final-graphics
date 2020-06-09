@@ -2,6 +2,32 @@ from display import *
 from matrix import *
 from gmath import *
 
+##----------------------------TUBE---------------------------------##
+
+#r1 is inner radius, r2 is outer radius
+def add_tube(polygons, x, y, z, r1, r2, h, step):
+    topInner = generate_cylinder(x, y, z, r1, h, step)
+    topOuter = generate_cylinder(x, y, z, r2, h, step)
+    
+    baseInner = generate_cylinder(x, y-h, z, r1, h, step)
+    baseOuter = generate_cylinder(x, y-h, z, r2, h, step)
+    
+    start = 0
+    stop = step
+    
+    while start < stop:
+        s1 = start
+        s2 = (s1 + 1) % step
+        
+        #outside
+        add_polygon( polygons, topOuter[s1][0], topOuter[s1][1], topOuter[s1][2], baseOuter[s2][0], baseOuter[s2][1], baseOuter[s2][2], baseOuter[s1][0], baseOuter[s1][1], baseOuter[s1][2])
+        add_polygon( polygons, baseOuter[s2][0], baseOuter[s2][1], baseOuter[s2][2], topOuter[s1][0], topOuter[s1][1], topOuter[s1][2], topOuter[s2][0], topOuter[s2][1], topOuter[s2][2])
+        #inside
+        add_polygon( polygons, topInner[s1][0], topInner[s1][1], topInner[s1][2], baseInner[s2][0], baseInner[s2][1], baseInner[s2][2], baseInner[s1][0], baseInner[s1][1], baseInner[s1][2])
+        add_polygon( polygons, baseInner[s2][0], baseInner[s2][1], baseInner[s2][2], topInner[s1][0], topInner[s1][1], topInner[s1][2], topInner[s2][0], topInner[s2][1], topInner[s2][2])
+        
+        start+=1
+
 ##------------------------------CONE------------------------------##
 
 def add_cone(polygons, x, y, z, r, h, step):

@@ -17,6 +17,7 @@ tokens = (
     "PRISM",
     "TORUS",
     "SPHERE",
+    "TUBE",
     "CONE",
     "BOX", 
     "LINE", 
@@ -60,6 +61,7 @@ reserved = {
     "torus" : "TORUS",
     "sphere" : "SPHERE",
     "cone" : "CONE",
+    "tube" : "TUBE",
     "prism" : "PRISM",
     "box" : "BOX",
     "line" : "LINE",
@@ -185,6 +187,23 @@ def p_command_cylinder(p):
     if len(p) == 9 and isinstance(p[8], str):
         cmd['cs'] = p[8]
     cmd['args'] = p[arg_start:arg_start+5]
+    commands.append(cmd)
+    
+def p_command_tube(p):
+    """command : TUBE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
+               | TUBE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
+               | TUBE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
+               | TUBE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
+    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
+    arg_start = 2
+    if isinstance(p[2], str):
+        cmd['constants'] = p[2]
+        arg_start = 3
+    if len(p) == 9 and isinstance(p[8], str):
+        cmd['cs'] = p[8]
+    if len(p) == 10 and isinstance(p[9], str):
+        cmd['cs'] = p[9]
+    cmd['args'] = p[arg_start:arg_start+6]
     commands.append(cmd)
     
 def p_command_cone(p):
