@@ -218,8 +218,8 @@ def add_cylinder(polygons, cx, cy, cz, r, h, step):
         s1 = start
         s2 = (s1 + 1) % step
         
-        f1 = (f1 + 2) % step
-        f2 = (f2 + 1) % step
+        f2 = (f1 + 2) % step
+        f1 = (f2 + 1) % step
         
         add_polygon(polygons, top_points[0][0], top_points[0][1], top_points[0][2], top_points[f1][0], top_points[f1][1], top_points[f1][2], top_points[f2][0], top_points[f2][1], top_points[f2][2])
         
@@ -228,27 +228,6 @@ def add_cylinder(polygons, cx, cy, cz, r, h, step):
         
         add_polygon(polygons, bottom_points[0][0], bottom_points[0][1], bottom_points[0][2], bottom_points[f1][0], bottom_points[f1][1], bottom_points[f1][2], bottom_points[f2][0], bottom_points[f2][1], bottom_points[f2][2])
         start+=1
-        
-    
-    
-#    lat_start = 0
-#    lat_stop = step
-#    longt_start = 0
-#    longt_stop = step
-#
-#    for lat in range(lat_start, lat_stop):
-#        for longt in range(longt_start, longt_stop):
-#
-#            p0 = lat * step + longt
-#            p1 = (p0 + step - 1) % (step * (step-1))
-#            p2 = (p0 + step) % (step * (step-1))
-#            p3 = p0 + 1
-#
-#            print(p0, p1, p2, p3)
-#            if longt != 0 and longt != step:
-#                print("A", p0, p1, p2, p3)
-#                add_polygon( polygons, points[p0][0], points[p0][1], points[p0][2], points[p1][0], points[p1][1], points[p1][2], points[p2][0], points[p2][1], points[p2][2])
-#            add_polygon( polygons, points[p0][0], points[p0][1], points[p0][2], points[p2][0], points[p2][1], points[p2][2], points[p3][0], points[p3][1], points[p3][2])
 
 
 def generate_cylinder( cx, cy, cz, r, h, step):
