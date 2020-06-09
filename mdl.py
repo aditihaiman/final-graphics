@@ -17,6 +17,7 @@ tokens = (
     "PRISM",
     "TORUS",
     "SPHERE",
+    "CONE",
     "BOX", 
     "LINE", 
     "MESH", 
@@ -58,6 +59,7 @@ reserved = {
     "pyramid" : "PYRAMID",
     "torus" : "TORUS",
     "sphere" : "SPHERE",
+    "cone" : "CONE",
     "prism" : "PRISM",
     "box" : "BOX",
     "line" : "LINE",
@@ -185,7 +187,24 @@ def p_command_cylinder(p):
     cmd['args'] = p[arg_start:arg_start+5]
     commands.append(cmd)
     
-def p_command_cylinder(p):
+def p_command_cone(p):
+    """command : CONE NUMBER NUMBER NUMBER NUMBER NUMBER
+               | CONE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER
+               | CONE NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
+               | CONE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
+    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
+    arg_start = 2
+    if isinstance(p[2], str):
+        cmd['constants'] = p[2]
+        arg_start = 3
+    if len(p) == 8 and isinstance(p[7], str):
+        cmd['cs'] = p[7]
+    if len(p) == 9 and isinstance(p[8], str):
+        cmd['cs'] = p[8]
+    cmd['args'] = p[arg_start:arg_start+5]
+    commands.append(cmd)
+    
+def p_command_prism(p):
     """command : PRISM NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | PRISM SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | PRISM NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL

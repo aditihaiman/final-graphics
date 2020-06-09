@@ -2,6 +2,25 @@ from display import *
 from matrix import *
 from gmath import *
 
+##------------------------------CONE------------------------------##
+
+def add_cone(polygons, x, y, z, r, h, step):
+    base = generate_cylinder(x, y, z, r, h, step)
+    
+    start = 0
+    stop = step
+    top = [x, y+h, z]
+    center = [x, y, z]
+    
+    while start < stop:
+        p1 = start
+        p2 = (start + 1) % step
+        
+        add_polygon(polygons, top[0], top[1], top[2], base[p1][0], base[p1][1], base[p1][2], base[p2][0], base[p2][1], base[p2][2])
+        add_polygon(polygons, center[0], center[1], center[2], base[p2][0], base[p2][1], base[p2][2], base[p1][0], base[p1][1], base[p1][2])
+        start+=1
+
+
 ##---------------------PRISMS-----------------------##
 def add_prism(polygons, cx, cy, cz, r, h, sides, step):
     step = int(sides)
