@@ -2,6 +2,28 @@ from display import *
 from matrix import *
 from gmath import *
 
+
+##-------------------------------PYRAMID---------------------------##
+
+#given front left corner of base and top point, width and depth of base
+def add_pyramid(polygons, px, py, pz, sx, sy, sz, bw, bd): #two points and base dimensions
+
+    #base
+    add_polygon(polygons, sx, sy, sz, sx+bw, sy, sz, sx, sy, sz-bd)
+    add_polygon(polygons, sx, sy, sz-bd, sx+bw, sy, sz, sx+bw, sy, sz-bd)
+    
+    #front
+    add_polygon(polygons, sx, sy, sz, sx+bw, sy, sz, px, py, pz)
+    
+    #sides
+    add_polygon(polygons, sx, sy, sz, px, py, pz, sx, sy, sz-bd)
+    add_polygon(polygons, sx+bw, sy, sz, sx+bw, sy, sz-bd, px, py, pz)
+    
+    #back
+    add_polygon(polygons, sx+bw, sy, sz-bd, sx, sy, sz-bd, px, py, pz)
+
+
+
 ##---------------------------------BOX------------------------------##
 
 
