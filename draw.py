@@ -2,6 +2,38 @@ from display import *
 from matrix import *
 from gmath import *
 
+##---------------------PRISMS-----------------------##
+def add_prism(polygons, cx, cy, cz, r, h, sides, step):
+    step = int(sides)
+    top_points = generate_prism(cx, cy, cz, r, h, step)
+    bottom_points = generate_prism(cx, cy-h, cz, r, h, step)
+    
+    
+    start = 0
+    stop = step
+    
+    while start < stop:
+        s1 = start
+        s2 = (s1 + 1) % step
+
+        add_polygon(polygons, top_points[0][0], top_points[0][1], top_points[0][2], top_points[s2][0], top_points[s2][1], top_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2])
+
+        add_polygon( polygons, top_points[s1][0], top_points[s1][1], top_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2])
+        add_polygon( polygons, bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2], top_points[s2][0], top_points[s2][1], top_points[s2][2])
+        add_polygon(polygons, bottom_points[0][0], bottom_points[0][1], bottom_points[0][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2])
+        start+=1
+
+def generate_prism( cx, cy, cz, r, h, step):
+    points = []
+    for circle in range(0, step):
+        circ = circle/float(step)
+        
+        x = r * math.cos(2*math.pi * circ) + cx
+        z = r * math.sin(2*math.pi * circ) + cz
+
+        points.append([x, cy, z])
+    
+    return points
 
 ##-------------------------------PYRAMID---------------------------##
 
