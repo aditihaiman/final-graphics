@@ -210,39 +210,28 @@ def add_cylinder(polygons, cx, cy, cz, r, h, step):
     
     
     start = 0
-    f1 = 0
-    f2 = 0
     stop = step
     
     while start < stop:
         s1 = start
         s2 = (s1 + 1) % step
-        
-        f2 = (f1 + 2) % step
-        f1 = (f2 + 1) % step
-        
-        add_polygon(polygons, top_points[0][0], top_points[0][1], top_points[0][2], top_points[f1][0], top_points[f1][1], top_points[f1][2], top_points[f2][0], top_points[f2][1], top_points[f2][2])
-        
-        add_polygon( polygons, top_points[s1][0], top_points[s1][1], top_points[s1][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2])
-        add_polygon( polygons, top_points[s1][0], top_points[s1][1], top_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], top_points[s2][0], top_points[s2][1], top_points[s2][2])
-        
-        add_polygon(polygons, bottom_points[0][0], bottom_points[0][1], bottom_points[0][2], bottom_points[f1][0], bottom_points[f1][1], bottom_points[f1][2], bottom_points[f2][0], bottom_points[f2][1], bottom_points[f2][2])
-        start+=1
 
+        add_polygon(polygons, top_points[0][0], top_points[0][1], top_points[0][2], top_points[s2][0], top_points[s2][1], top_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2])
+
+        add_polygon( polygons, top_points[s1][0], top_points[s1][1], top_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2])
+        add_polygon( polygons, bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2], top_points[s1][0], top_points[s1][1], top_points[s1][2], top_points[s2][0], top_points[s2][1], top_points[s2][2])
+        add_polygon(polygons, bottom_points[0][0], bottom_points[0][1], bottom_points[0][2], bottom_points[s1][0], bottom_points[s1][1], bottom_points[s1][2], bottom_points[s2][0], bottom_points[s2][1], bottom_points[s2][2])
+        start+=1
 
 def generate_cylinder( cx, cy, cz, r, h, step):
     points = []
-    
-    circ_start = 0
-    circ_stop = step
-    for circle in range(circ_start, circ_stop):
+    for circle in range(0, step):
         circ = circle/float(step)
         
         x = r * math.cos(2*math.pi * circ) + cx
-        y = cy
         z = r * math.sin(2*math.pi * circ) + cz
 
-        points.append([x, y, z])
+        points.append([x, cy, z])
     
     return points
 
