@@ -1,113 +1,136 @@
-constants dull_yellow 0.3 0.8 0.2 0.3 0.8 0.2 0 0 0
-constants green 0.1 0.1 0.1 0.8 0.8 0.8 0.1 0.1 0.1
-constants brown 0.5 0.5 0.5 0.3 0.3 0.3 0 0 0
-constants dull_brown 0.5 0.5 0.1 0.3 0.3 0.1 0 0 0
-constants black 0 0.1 0.8 0.0 0.1 0.8 0.0 0.1 0.8
-
-frames 50
-basename giraffo_ 
-
-push
-rotate y -30
-move -10 0 0 walky
+constants yellow 0.93 0.93 1 0.93 0.93 1 0 0 1
+constants brown 0.38 0.38 0.5 0.2 0.2 0.5 .07 .07 .5
+constants dull_brown 0.38 0.38 0 0.2 0.2 0 .07 .07 0
+constants sandy_brown 0.96 0.96 0 0.64 0.64 0 0.38 0.38 0 
+constants white 1 1 1 1 1 1 1 1 1
+constants black 0 0 0 0 0 0 0 0 0
+constants grass_green 0.3 0.3 1 0.74 0.74 1 0.2 0.2 1
+constants tree_brown 0.37 0.37 .5 0.15 0.15 .5 0.02 0.02 0.5
 
 push
-// EARS
-rotate z -30
-move 95 555 10
-scale 1 3.5 0.5
-sphere dull_yellow 0 0 0 20
+//rotate y 87
+//move 3000 0 0
+
+//body
+sphere yellow 250 150 -200 100
+
+//neck
+cylinder yellow 250 350 -200 25 110
+
+//feet
+ellipsoid dull_brown 200 50 -140 30 25 25
+ellipsoid dull_brown 300 50 -140 30 25 25
+push
+rotate x 15
+move 0 -30 0
+prism dull_brown 200 25 -140 30 5 5
 pop
+
+//head
+ellipsoid yellow 250 375 -200 60 60 60
+
+//eyes
+sphere white 225 390 -155 20
+sphere white 275 390 -155 20
+sphere black 230 390 -138 9
+sphere black 270 390 -138 9
+
+//nose
+ellipsoid sandy_brown 250 340 -150 40 25 40
+sphere black 240 340 -110 5
+sphere black 260 340 -110 5
+
+//horns
+cylinder yellow 230 455 -200 10 30
+cylinder yellow 270 455 -200 10 30
+sphere brown 230 465 -200 10
+sphere brown 270 465 -200 10
+
+//ears
+push
+move 205 410 -200
+rotate z 45
+cone sandy_brown 0 0 0 20 60
+pop
+
 
 push
-rotate z 30
-move 340 307 10
-scale 1 3.5 0.5
-sphere dull_yellow 0 0 0 20
+move 295 410 -200
+rotate z -45
+cone sandy_brown 0 0 0 20 60
 pop
 
+
+//spots
+sphere brown 210 200 -160 30
+sphere brown 240 170 -130 30
+sphere brown 230 130 -130 30
+sphere brown 280 190 -140 30
+sphere brown 300 120 -140 20
+sphere brown 185 150 -165 30
+
+sphere brown 240 270 -185 10
+sphere brown 260 290 -190 15
+
+//grass
+pyramid grass_green 0 45 -200 0 0 -200 10 10
+pyramid grass_green 10 45 -200 10 0 -200 10 10
+pyramid grass_green 20 45 -200 20 0 -200 10 10
+pyramid grass_green 30 45 -200 30 0 -200 10 10
+pyramid grass_green 40 45 -200 40 0 -200 10 10
+pyramid grass_green 50 45 -200 50 0 -200 10 10
+pyramid grass_green 60 45 -200 60 0 -200 10 10
+pyramid grass_green 70 45 -200 70 0 -200 10 10
+pyramid grass_green 80 45 -200 80 0 -200 10 10
+pyramid grass_green 90 45 -200 90 0 -200 10 10
+pyramid grass_green 100 45 -200 100 0 -200 10 10
+pyramid grass_green 110 45 -200 110 0 -200 10 10
+pyramid grass_green 120 45 -200 120 0 -200 10 10
+pyramid grass_green 130 45 -200 130 0 -200 10 10
+pyramid grass_green 140 45 -200 140 0 -200 10 10
+pyramid grass_green 150 45 -200 150 0 -200 10 10
+pyramid grass_green 160 45 -200 160 0 -200 10 10
+pyramid grass_green 170 45 -200 170 0 -200 10 10
+pyramid grass_green 180 45 -200 180 0 -200 10 10
+pyramid grass_green 190 45 -200 190 0 -200 10 10
+pyramid grass_green 200 45 -200 200 0 -200 10 10
+pyramid grass_green 210 45 -200 210 0 -200 10 10
+pyramid grass_green 220 45 -200 220 0 -200 10 10
+pyramid grass_green 230 45 -200 230 0 -200 10 10
+pyramid grass_green 240 45 -200 240 0 -200 10 10
+pyramid grass_green 250 45 -200 250 0 -200 10 10
+pyramid grass_green 260 45 -200 260 0 -200 10 10
+pyramid grass_green 270 45 -200 270 0 -200 10 10
+pyramid grass_green 280 45 -200 280 0 -200 10 10
+pyramid grass_green 290 45 -200 290 0 -200 10 10
+pyramid grass_green 300 45 -200 300 0 -200 10 10
+pyramid grass_green 310 45 -200 310 0 -200 10 10
+pyramid grass_green 320 45 -200 320 0 -200 10 10
+pyramid grass_green 330 45 -200 330 0 -200 10 10
+pyramid grass_green 340 45 -200 340 0 -200 10 10
+pyramid grass_green 350 45 -200 350 0 -200 10 10
+pyramid grass_green 360 45 -200 360 0 -200 10 10
+pyramid grass_green 370 45 -200 370 0 -200 10 10
+pyramid grass_green 380 45 -200 380 0 -200 10 10
+pyramid grass_green 390 45 -200 390 0 -200 10 10
+pyramid grass_green 400 45 -200 400 0 -200 10 10
+pyramid grass_green 410 45 -200 410 0 -200 10 10
+pyramid grass_green 420 45 -200 420 0 -200 10 10
+pyramid grass_green 430 45 -200 430 0 -200 10 10
+pyramid grass_green 440 45 -200 440 0 -200 10 10
+pyramid grass_green 450 45 -200 450 0 -200 10 10
+pyramid grass_green 460 45 -200 460 0 -200 10 10
+pyramid grass_green 470 45 -200 470 0 -200 10 10
+pyramid grass_green 480 45 -200 480 0 -200 10 10
+pyramid grass_green 490 45 -200 490 0 -200 10 10
+pyramid grass_green 500 45 -200 500 0 -200 10 10
+
+//tree
 push
-move 0 50 0
-// FACE
-box dull_yellow 200 350 10 100 200 10
-box dull_yellow 180 360 10 140 60 10
-
-// HORNS
-box brown 200 420 10 20 70 10
-sphere brown 210 430 10 10
-box brown 280 420 10 20 70 10
-sphere brown 290 430 10 10
-
-// NOSE
-box dull_yellow 210 180 10 80 60 10
-push
-scale 1 1.5 1
-sphere brown 230 100 10 10
-sphere brown 270 100 10 10
+move 50 150 -220
+rotate x 15
+prism tree_brown 0 0 0 30 150 6
 pop
+display
 
-// EYES
-push
-scale 1 1 0.5
-sphere black 220 280 10 20
-sphere black 280 280 10 20
-pop
-
-// NECK
-box dull_yellow 230 120 10 40 120 10
-pop
-
-// BODY
-box dull_yellow 230 50 10 40 30 550
-
-// LEGS
-box dull_yellow 230 20 10 10 20 10
-box dull_yellow 230 20 490 10 20 10
-box dull_yellow 260 20 10 10 20 10
-box dull_yellow 260 20 490 10 20 10
-
-// SPOTS
-sphere dull_brown 254 30 9 7
-sphere dull_brown 250 55 9 7
-sphere dull_brown 246 80 9 7
-sphere dull_brown 254 105 9 7
-sphere dull_brown 250 130 9 7
-sphere dull_brown 246 155 9 7
-sphere dull_brown 275 34 9 7
-sphere dull_brown 300 30 9 7
-sphere dull_brown 325 34 9 7
-sphere dull_brown 375 37 9 7
-sphere dull_brown 350 31 9 7
-sphere dull_brown 450 30 9 7
-sphere dull_brown 400 34 9 7
-sphere dull_brown 425 31 9 7
-sphere dull_brown 500 30 9 7
-sphere dull_brown 575 34 9 7
-sphere dull_brown 550 37 9 7
-sphere dull_brown 525 31 9 7
-
-
-pop
-
-//TREE
-push
-move 800 0 0 walky
-box brown -310 100 1000 10 100 10
-sphere green -320 90 1000 20
-sphere green -305 110 1000 20
-sphere green -290 90 1000 20
-pop
-
-push
-move 600 0 0 walky
-box brown -100 60 -2000 6 60 0
-sphere green -106 54 -2000 12
-sphere green -97 66 -2000 12
-sphere green -88 54 -2000 12
-pop
-
-vary walky 0 49 0 1
- 
-//display
-
-//save giraffo.png
+save giraffo.png
