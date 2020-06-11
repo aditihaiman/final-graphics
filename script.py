@@ -276,3 +276,48 @@ def run(filename):
         # end fromes loop
     if num_frames > 1:
         make_animation(name)
+
+
+"""Shape commands:
+    1. box x y z w h d
+        (x, y, z) is the coordinate of top left front corner
+        (w, h, d) is in (x, y, z) dimension
+        
+    2. cone x y z r h
+        (x, y, z) is center of base
+        (r, h) is radius of base and height of cone
+        
+    3. tube x y z r1 r2 h
+        (x, y, z) is center of top face
+        r1 is inner radius
+        r2 is outer radius
+        h is height of tube
+        r1 must be < r2 to get a proper looking tube
+  
+    4. prism x y z r h f
+        (x, y, z) is the center of the top face
+        (r, h) is radius and height
+        f is the number of faces (ex: f = 5 is a pentagonal prism)
+  
+    5. cylinder x y z r h
+        (x, y, z) is center of top face
+        (r, h) is radius and height
+  
+    6. pyramid x1 y1 z1 x2 y2 z2 w d
+        (x1, y1, z1) is the top of the pyramid
+        (x2, y2, z2) is the front left corner of the base
+        (w, d) are width and depth of the base in (x, z) dimensions
+  
+    7. ellipsoid x y z rx ry rz
+        (x, y, z) is the center
+        rx, ry, rz are radii in each direction
+  
+    8. sphere x y z r
+        (x, y, z) is center of the sphere
+        r is the radius
+  
+    9. torus x y z r R
+        (x, y, z) is the center of the torus
+        r is the radius of the circular cross-section
+        R is the distance from torus center to center of circular cross-section
+"""
