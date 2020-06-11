@@ -140,11 +140,10 @@ def add_box( polygons, x, y, z, width, height, depth ):
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1)
 
 
-##---------------------------------SPHERE/ELLIPSOID-------------------------##
+##---------------------------------SPHERE-------------------------##
 
-
-def add_sphere(polygons, cx, cy, cz, rx, ry, rz, step ):
-    points = generate_sphere(cx, cy, cz, rx, ry, rz, step)
+def add_sphere(polygons, cx, cy, cz, r, step ):
+    points = generate_sphere(cx, cy, cz, r, step)
 
     lat_start = 0
     lat_stop = step
@@ -182,7 +181,69 @@ def add_sphere(polygons, cx, cy, cz, rx, ry, rz, step ):
                              points[p3][2])
 
 
-def generate_sphere( cx, cy, cz, rx, ry, rz, step ):
+def generate_sphere( cx, cy, cz, r, step ):
+    points = []
+
+    rot_start = 0
+    rot_stop = step
+    circ_start = 0
+    circ_stop = step
+
+    for rotation in range(rot_start, rot_stop):
+        rot = rotation/float(step)
+        for circle in range(circ_start, circ_stop+1):
+            circ = circle/float(step)
+
+            x = r * math.cos(math.pi * circ) + cx
+            y = r * math.sin(math.pi * circ) * math.cos(2*math.pi * rot) + cy
+            z = r * math.sin(math.pi * circ) * math.sin(2*math.pi * rot) + cz
+
+            points.append([x, y, z])
+            #print 'rotation: %d\tcircle%d'%(rotation, circle)
+    return points
+
+##--------------------------------ELLIPSOID------------------------------##
+
+def add_ellipsoid(polygons, cx, cy, cz, rx, ry, rz, step ):
+    points = generate_ellipsoid(cx, cy, cz, rx, ry, rz, step)
+
+    lat_start = 0
+    lat_stop = step
+    longt_start = 0
+    longt_stop = step
+
+    step+= 1
+    for lat in range(lat_start, lat_stop):
+        for longt in range(longt_start, longt_stop):
+
+            p0 = lat * step + longt
+            p1 = p0+1
+            p2 = (p1+step) % (step * (step-1))
+            p3 = (p0+step) % (step * (step-1))
+
+            if longt != step - 2:
+                add_polygon( polygons, points[p0][0],
+                             points[p0][1],
+                             points[p0][2],
+                             points[p1][0],
+                             points[p1][1],
+                             points[p1][2],
+                             points[p2][0],
+                             points[p2][1],
+                             points[p2][2])
+            if longt != 0:
+                add_polygon( polygons, points[p0][0],
+                             points[p0][1],
+                             points[p0][2],
+                             points[p2][0],
+                             points[p2][1],
+                             points[p2][2],
+                             points[p3][0],
+                             points[p3][1],
+                             points[p3][2])
+
+
+def generate_ellipsoid( cx, cy, cz, rx, ry, rz, step ):
     points = []
 
     rot_start = 0

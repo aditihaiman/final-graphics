@@ -144,7 +144,7 @@ def run(filename):
                 print('\tkob: ' + knob + '\tvalue: ' + str(frame[knob]))
 
         for command in commands:
-            print(command)
+            #print(command)
             c = command['op']
             args = command['args']
             knob_value = 1
@@ -198,12 +198,22 @@ def run(filename):
                 matrix_mult(stack[-1], tmp)
                 draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
                 tmp = []
+            elif c == 'ellipsoid':
+                if command['constants']:
+                    reflect = command['constants']
+                #print("A", args)
+                add_ellipsoid(tmp,
+                           args[0], args[1], args[2], args[3], args[4], args[5], step_3d)
+                matrix_mult( stack[-1], tmp )
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                tmp = []
+                reflect = '.white'
             elif c == 'sphere':
                 if command['constants']:
                     reflect = command['constants']
                 #print("A", args)
                 add_sphere(tmp,
-                           args[0], args[1], args[2], args[3], args[4], args[5], step_3d)
+                           args[0], args[1], args[2], args[3], step_3d)
                 matrix_mult( stack[-1], tmp )
                 draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
                 tmp = []
